@@ -76,18 +76,22 @@ public class CatherbyFisher extends Script {
 		int xpPerHour;
 		int levelsGained;
 		
-		g.setColor(Color.PINK);
-		g.setFont(new Font("Arial", Font.BOLD, 14));
-		
 		xpGained = experienceTracker.getGainedXP(Skill.FISHING);
 		xpPerHour = experienceTracker.getGainedXPPerHour(Skill.FISHING);
 		levelsGained = experienceTracker.getGainedLevels(Skill.FISHING);
 		
-		g.drawString("Tuna Caught: " + tunaCount, 350, 245);
-		g.drawString("Swordfish Caught: " + swordfishCount, 350, 265);
-		g.drawString("XP Gained: " + formatXpVal(xpGained), 350, 285);
-		g.drawString("XP/hr: " + formatXpVal(xpPerHour), 350, 305);
-		g.drawString("Levels Gained: " + levelsGained, 350, 325);
+		g.setColor(new Color(0x093145));
+		g.fillRect(0, 0, 515, 50);
+		
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Arial", Font.BOLD, 14));
+		
+		g.drawString("Tuna Caught: " + formatLargeValue(tunaCount), 5, 20);
+		g.drawString("Swordfish Caught: " + formatLargeValue(swordfishCount), 5, 40);
+		g.drawString("Current Fishing Level: " + skills.getStatic(Skill.FISHING), 180, 20);
+		g.drawString("Levels Gained: " + levelsGained, 180, 40);
+		g.drawString("XP Gained: " + formatLargeValue(xpGained), 380, 20);
+		g.drawString("XP/hr: " + formatLargeValue(xpPerHour), 380, 40);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -156,7 +160,7 @@ public class CatherbyFisher extends Script {
 		}
 	}
 	
-	private String formatXpVal(int val) {
+	private String formatLargeValue(int val) {
 		String ret;
 		
 		if(val > 1000) {
