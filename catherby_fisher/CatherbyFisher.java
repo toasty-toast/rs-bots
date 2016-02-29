@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.io.IOException;
 
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.constants.Banks;
@@ -52,6 +53,10 @@ public class CatherbyFisher extends Script {
 	
 	@Override
 	public void onExit() {
+		try {
+			XPReporter.reportXP(Skill.FISHING, experienceTracker.getGainedXP(Skill.FISHING));
+		} catch (IOException e) {}
+		
 		log("Tuna caught: " + tunaCount);
 		log("Swordfish caught: " + swordfishCount);
 		log("Fishing XP Gained: " + experienceTracker.getGainedXP(Skill.FISHING));

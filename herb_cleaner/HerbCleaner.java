@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
@@ -49,6 +51,7 @@ public class HerbCleaner extends Script {
 	@Override
 	public void onStart() {
 		state = State.BANKING;
+		experienceTracker.start(Skill.HERBLORE);
 	}
 	
 	@Override
@@ -63,6 +66,13 @@ public class HerbCleaner extends Script {
 			default:
 		}
 		return random(250, 2000);
+	}
+	
+	@Override
+	public void onExit() {
+		try {
+			XPReporter.reportXP(Skill.HERBLORE, experienceTracker.getGainedXP(Skill.HERBLORE));
+		} catch (IOException e) {}
 	}
 	
 	private void cleanHerbs() throws InterruptedException {
