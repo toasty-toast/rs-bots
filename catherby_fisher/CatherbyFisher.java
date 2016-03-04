@@ -99,12 +99,12 @@ public class CatherbyFisher extends Script {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.BOLD, 14));
 		
-		g.drawString("Tuna Caught: " + formatLargeValue(tunaCount), 5, 20);
-		g.drawString("Swordfish Caught: " + formatLargeValue(swordfishCount), 5, 40);
+		g.drawString("Tuna Caught: " + formatXpVal(tunaCount), 5, 20);
+		g.drawString("Swordfish Caught: " + formatXpVal(swordfishCount), 5, 40);
 		g.drawString("Current Fishing Level: " + skills.getStatic(Skill.FISHING), 180, 20);
 		g.drawString("Levels Gained: " + levelsGained, 180, 40);
-		g.drawString("XP Gained: " + formatLargeValue(xpGained), 380, 20);
-		g.drawString("XP/hr: " + formatLargeValue(xpPerHour), 380, 40);
+		g.drawString("XP Gained: " + formatXpVal(xpGained), 380, 20);
+		g.drawString("XP/hr: " + formatXpVal(xpPerHour), 380, 40);
 	}
 	
 	@SuppressWarnings("deprecation")
