@@ -10,6 +10,7 @@ import org.osbot.rs07.api.ui.Message;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+import org.osbot.rs07.utility.ConditionalSleep;
 
 @ScriptManifest(author="ToastyToast", info = "", logo = "", name = "Catherby Fisher", version = 0.1)
 public class CatherbyFisher extends Script {
@@ -24,27 +25,34 @@ public class CatherbyFisher extends Script {
 	private Area currentFishingArea;
 	private int tunaCount;
 	private int swordfishCount;
-
+	
+	private State state;
+	
 	private enum State {
 		FISH,
-		BANK
+		BANK,
+		WAIT
 	}
 	
 	@Override
 	public void onStart() {
 		tunaCount = 0;
 		swordfishCount = 0;
+		state = State.BANK;
 		experienceTracker.start(Skill.FISHING);
 	}
 	
 	@Override
 	public int onLoop() throws InterruptedException {
-		switch(getState()) {
+		switch(state) {
 			case BANK:
 				bank();
 				break;
 			case FISH:
 				fish();
+				break;
+			case WAIT:
+				waitUntilIdle();
 				break;
 			default:
 		}
@@ -108,6 +116,7 @@ public class CatherbyFisher extends Script {
 					bank.depositAllExcept("Harpoon");
 					sleep(random(500, 1000));
 					bank.close();
+					state = State.FISH;
 				} else {
 					bank.open();
 				}
@@ -123,12 +132,26 @@ public class CatherbyFisher extends Script {
 				NPC fishingSpot = npcs.closest(CAGE_HARPOON_FISH_SPOT);
 				if(fishingSpot != null) {
 					fishingSpot.interact("Harpoon");
+					state = State.WAIT;
 				} else {
 					goToNextFishingArea();
 				}
 			} else {
 				goToNextFishingArea();
 			}
+		}
+	}
+	
+	private void waitUntilIdle() {
+		new ConditionalSleep(2000) {
+			@Override
+			public boolean condition() throws InterruptedException {
+				return !myPlayer().isAnimating() && !myPlayer().isMoving();
+			}
+		}.sleep();
+		
+		if(inventory.isFull()) {
+			state = State.BANK;
 		}
 	}
 	
@@ -154,14 +177,6 @@ public class CatherbyFisher extends Script {
 		} else if(currentFishingArea.equals(FISHING_AREA_4)) {
 			localWalker.walk(FISHING_AREA_1.getRandomPosition(), true);
 			currentFishingArea = FISHING_AREA_1;
-		}
-	}
-	
-	private State getState() {
-		if(getInventory().isFull()) {
-			return State.BANK;
-		} else {
-			return State.FISH;
 		}
 	}
 	
