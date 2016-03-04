@@ -180,7 +180,7 @@ public class CatherbyFisher extends Script {
 		}
 	}
 	
-	private String formatLargeValue(int val) {
+	private String formatXpVal(int val) {
 		String ret;
 		
 		if(val > 1000) {
