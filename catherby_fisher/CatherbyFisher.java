@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.map.constants.Banks;
@@ -33,6 +35,7 @@ public class CatherbyFisher extends Script {
 	private State state;
 	
 	private enum State {
+		INIT,
 		BANK,
 		FISH,
 		WAIT
@@ -42,13 +45,16 @@ public class CatherbyFisher extends Script {
 	public void onStart() {
 		tunaCount = 0;
 		swordfishCount = 0;
-		state = State.BANK;
+		state = State.INIT;
 		experienceTracker.start(Skill.FISHING);
 	}
 	
 	@Override
 	public int onLoop() throws InterruptedException {
 		switch(state) {
+			case INIT:
+				initInventory();
+				break;
 			case BANK:
 				bank();
 				break;
@@ -114,6 +120,32 @@ public class CatherbyFisher extends Script {
 		g.drawString("Levels Gained: " + levelsGained, 180, 40);
 		g.drawString("XP Gained: " + formatXpVal(xpGained), 380, 20);
 		g.drawString("XP/hr: " + formatXpVal(xpPerHour), 380, 40);
+	}
+	
+	private void initInventory() throws InterruptedException {
+		walkToBank();
+		
+		if(!bank.isOpen()) {
+			bank.open();
+			sleep(random(500, 1000));
+		}
+		
+		bank.depositAllExcept("Harpoon");
+		sleep(random(500, 1000));
+		
+		if(!inventory.contains("Harpoon")) {
+			stop(false);
+			if(bank.contains("Harpoon")) {
+				bank.withdraw("Harpoon", 1);
+				sleep(random(500, 1000));
+			} else {
+				JOptionPane.showMessageDialog(null, "No harpoon found in inventory or bank");
+			}
+		}
+		
+		bank.close();
+		
+		state = State.FISH;
 	}
 	
 	@SuppressWarnings("deprecation")
