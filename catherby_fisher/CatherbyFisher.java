@@ -2,12 +2,16 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.osbot.rs07.api.map.Area;
+import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.map.constants.Banks;
 import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.ui.Message;
 import org.osbot.rs07.api.ui.Skill;
+import org.osbot.rs07.api.util.LocalPathFinder;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import org.osbot.rs07.utility.ConditionalSleep;
@@ -29,8 +33,8 @@ public class CatherbyFisher extends Script {
 	private State state;
 	
 	private enum State {
-		FISH,
 		BANK,
+		FISH,
 		WAIT
 	}
 	
@@ -53,6 +57,11 @@ public class CatherbyFisher extends Script {
 				break;
 			case WAIT:
 				waitUntilIdle();
+				if(inventory.isFull()) {
+					state = State.BANK;
+				} else {
+					state = State.FISH;
+				}
 				break;
 			default:
 		}
@@ -108,22 +117,34 @@ public class CatherbyFisher extends Script {
 	}
 	
 	@SuppressWarnings("deprecation")
-	private void bank() throws InterruptedException {
-		currentFishingArea = null;
-		if(!myPlayer().isAnimating()) {
-			if(CATHERBY_BANK.contains(myPlayer())) {
-				if(bank.isOpen()) {
-					bank.depositAllExcept("Harpoon");
-					sleep(random(500, 1000));
-					bank.close();
-					state = State.FISH;
-				} else {
-					bank.open();
-				}
-			} else {
-				localWalker.walk(CATHERBY_BANK.getRandomPosition(), false);
+	private void walkToBank() {
+		while(!CATHERBY_BANK.contains(myPlayer())) {
+			LocalPathFinder pathFinder = new LocalPathFinder(this.bot);
+			LinkedList<Position> path = pathFinder.findPath(myPlayer().getPosition(), CATHERBY_BANK.getRandomPosition());
+			if(path != null) {
+				localWalker.walkPath(path);
+				waitUntilIdle();
 			}
 		}
+	}
+	
+	private void bank() throws InterruptedException {
+		walkToBank();
+		
+		if(!bank.isOpen()) {
+			bank.open();
+			sleep(random(500, 1000));
+		}
+		
+		bank.depositAllExcept("Harpoon");
+		sleep(random(500, 1000));
+		bank.close();
+		
+		state = State.FISH;
+	}
+	
+	private void walkToFish() {
+		
 	}
 	
 	private void fish() {
@@ -143,16 +164,12 @@ public class CatherbyFisher extends Script {
 	}
 	
 	private void waitUntilIdle() {
-		new ConditionalSleep(2000) {
+		new ConditionalSleep(random(1000, 2000)) {
 			@Override
 			public boolean condition() throws InterruptedException {
 				return !myPlayer().isAnimating() && !myPlayer().isMoving();
 			}
 		}.sleep();
-		
-		if(inventory.isFull()) {
-			state = State.BANK;
-		}
 	}
 	
 	private boolean inFishingArea() {
