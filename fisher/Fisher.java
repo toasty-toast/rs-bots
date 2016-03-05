@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
@@ -84,9 +83,11 @@ public class Fisher extends Script {
 				bank();
 				break;
 			case FISH:
+				log("fish");
 				fish();
 				break;
 			case WAIT:
+				log("wait");
 				waitUntilIdle();
 				if(inventory.isFull()) {
 					state = State.BANK;
@@ -209,26 +210,24 @@ public class Fisher extends Script {
 	}
 	
 	private void fish() {
-		if(!myPlayer().isAnimating()) {
-			if(inFishingArea()) {
-				NPC fishingSpot = npcs.closest(CAGE_HARPOON_FISH_SPOT);
-				if(fishingSpot != null) {
-					fishingSpot.interact("Harpoon");
-					state = State.WAIT;
-				} else {
-					goToNextFishingArea();
-				}
+		if(inFishingArea()) {
+			NPC fishingSpot = npcs.closest(CAGE_HARPOON_FISH_SPOT);
+			if(fishingSpot != null) {
+				fishingSpot.interact("Harpoon");
+				state = State.WAIT;
 			} else {
 				goToNextFishingArea();
 			}
+		} else {
+			goToNextFishingArea();
 		}
 	}
 	
 	private void waitUntilIdle() {
-		new ConditionalSleep(random(1000, 2000)) {
+		new ConditionalSleep(Integer.MAX_VALUE, random(2000, 3000)) {
 			@Override
 			public boolean condition() throws InterruptedException {
-				return !myPlayer().isAnimating() && !myPlayer().isMoving();
+				return !myPlayer().isMoving() && !myPlayer().isAnimating();
 			}
 		}.sleep();
 	}
