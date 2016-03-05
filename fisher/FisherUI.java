@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.osbot.rs07.script.Script;
+import javax.swing.BoxLayout;
+import java.awt.GridLayout;
 
 
 @SuppressWarnings("serial")
@@ -17,6 +19,7 @@ public class FisherUI extends JFrame {
 	private Object fisherLock;
 	
 	private JButton btnCatherby;
+	private JButton btnDraynor;
 	
 	public FisherUI(Fisher parent, final Object lock) {
 		super();
@@ -38,9 +41,14 @@ public class FisherUI extends JFrame {
 		});
 		
 		JPanel pnlLocation = new JPanel();
+		pnlLocation.setLayout(new GridLayout(2, 1, 0, 8));
 		getContentPane().add(pnlLocation);
 		
 		buttonListener listener = new buttonListener();
+
+		btnDraynor = new JButton("Draynor - Shrimp & Anchovies");
+		btnDraynor.addActionListener(listener);
+		pnlLocation.add(btnDraynor);
 		
 		btnCatherby = new JButton("Catherby - Tuna & Swordfish");
 		btnCatherby.addActionListener(listener);
@@ -54,8 +62,10 @@ public class FisherUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource().equals(btnCatherby)) {
 				fisher.setMode(Fisher.Mode.CATHERBY_TUNA_SWORDFISH);
-				unlockFisher();
+			} else if(e.getSource().equals(btnDraynor)) {
+				fisher.setMode(Fisher.Mode.DRAYNOR_SHRIMP_ANCHOVIES);
 			}
+			unlockFisher();
 		}
 	}
 	

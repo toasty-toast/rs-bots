@@ -3,7 +3,7 @@ if exist .\build rmdir /Q /S .\build
 mkdir .\build
 
 javac -d .\build  -cp "dependencies/*;" fisher\Fisher.java fisher\FisherUI.java shared\XPReporter.java shared\SkillUtils.java
-jar cfe build\Fisher.jar Fisher -C .\build Fisher.class -C .\build Fisher$State.class -C .\build Fisher$Mode.class -C .\build Fisher$1.class -C .\build Fisher$2.class -C .\build FisherUI.class -C .\build FisherUI$buttonListener.class -C .\build FisherUI$1.class -C .\build SkillUtils.class -C .\build SkillUtils$1.class -C .\build SkillUtils$2.class -C .\build XPReporter.class
+jar cfe build\Fisher.jar Fisher -C .\build Fisher.class -C .\build Fisher$State.class -C .\build Fisher$Mode.class -C .\build Fisher$1.class -C .\build Fisher$2.class -C .\build Fisher$3.class -C .\build FisherUI.class -C .\build FisherUI$buttonListener.class -C .\build FisherUI$1.class -C .\build SkillUtils.class -C .\build SkillUtils$1.class -C .\build SkillUtils$2.class -C .\build XPReporter.class
 
 javac -d .\build -cp "dependencies/*;" herb_cleaner\HerbCleaner.java shared\XPReporter.java shared\SkillUtils.java
 jar cfe build\HerbCleaner.jar HerbCleaner -C .\build HerbCleaner.class -C .\build HerbCleaner$State.class -C .\build HerbCleaner$1.class -C .\build SkillUtils.class -C .\build SkillUtils$1.class -C .\build SkillUtils$2.class -C .\build XPReporter.class
