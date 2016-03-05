@@ -126,6 +126,8 @@ public class Fisher extends Script {
 		
 		switch(mode) {
 			case DRAYNOR_SHRIMP_ANCHOVIES:
+				log("Shrimp caught: " + shrimpCount);
+				log("Anchovies caught: " + anchovieCount);
 				break;
 			case CATHERBY_TUNA_SWORDFISH:
 				log("Tuna caught: " + tunaCount);
