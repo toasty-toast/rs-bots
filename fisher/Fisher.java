@@ -18,8 +18,8 @@ import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import org.osbot.rs07.utility.ConditionalSleep;
 
-@ScriptManifest(author="ToastyToast", info = "", logo = "", name = "Catherby Fisher", version = 0.1)
-public class CatherbyFisher extends Script {
+@ScriptManifest(author="ToastyToast", info = "", logo = "", name = "Fisher", version = 0.1)
+public class Fisher extends Script {
 	private static final int CAGE_HARPOON_FISH_SPOT = 1519;
 	private static final int NET_HARPOON_FISH_SPOT = 1520;
 	private static final Area FISHING_AREA_1 = new Area(2835, 3434, 2841, 3432);
@@ -32,7 +32,14 @@ public class CatherbyFisher extends Script {
 	private int tunaCount;
 	private int swordfishCount;
 	
+	private Object uiLock;
+	
 	private State state;
+	private Mode mode;
+	
+	public enum Mode {
+		CATHERBY_TUNA_SWORDFISH
+	}
 	
 	private enum State {
 		INIT,
@@ -43,6 +50,24 @@ public class CatherbyFisher extends Script {
 	
 	@Override
 	public void onStart() {
+		uiLock = new Object();
+		mode = null;
+		FisherUI ui = new FisherUI(this, uiLock);
+		
+		synchronized(uiLock) {
+			try {
+				uiLock.wait();
+			} catch (InterruptedException e) {
+				log(e.getMessage());
+			}
+		}
+
+		ui.dispose();
+		
+		if(mode == null) {
+			stop(false);
+		}
+		
 		tunaCount = 0;
 		swordfishCount = 0;
 		state = State.INIT;
@@ -120,6 +145,10 @@ public class CatherbyFisher extends Script {
 		g.drawString("Levels Gained: " + levelsGained, 180, 40);
 		g.drawString("XP Gained: " + formatXpVal(xpGained), 380, 20);
 		g.drawString("XP/hr: " + formatXpVal(xpPerHour), 380, 40);
+	}
+	
+	public void setMode(Mode mode) {
+		this.mode = mode;
 	}
 	
 	private void initInventory() throws InterruptedException {
