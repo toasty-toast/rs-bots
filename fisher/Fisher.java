@@ -83,11 +83,9 @@ public class Fisher extends Script {
 				bank();
 				break;
 			case FISH:
-				log("fish");
 				fish();
 				break;
 			case WAIT:
-				log("wait");
 				waitUntilIdle();
 				if(inventory.isFull()) {
 					state = State.BANK;
