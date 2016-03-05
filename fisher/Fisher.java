@@ -60,12 +60,12 @@ public class Fisher extends Script {
 				log(e.getMessage());
 			}
 		}
-
-		ui.dispose();
 		
 		if(mode == null) {
 			stop(false);
 		}
+		
+		ui.dispose();
 		
 		tunaCount = 0;
 		swordfishCount = 0;
