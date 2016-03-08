@@ -7,9 +7,12 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.osbot.rs07.api.model.NPC;
+import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.api.ui.Skill;
+import org.osbot.rs07.api.ui.Tab;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+import org.osbot.rs07.utility.ConditionalSleep;
 
 import com.toastytoast.bots.utils.XPReporter;
 
@@ -132,6 +135,31 @@ public class Splasher extends Script {
 		ArrayList<NPC> availableSpiders = new ArrayList<NPC>();
 		NPC spiderToAttack = null;
 		
+		// set autocast
+		if(tabs.getOpen() != Tab.ATTACK) {
+			tabs.open(Tab.ATTACK);
+		}
+		
+		RS2Widget autocastWidget = widgets.get(593, 25);
+		// make sure we are wielding a staff that can autocast
+		if(autocastWidget == null) {
+			JOptionPane.showMessageDialog(null, "You must be wielding a staff capable of autocast");
+			stop(false);
+		} else {
+			autocastWidget.interact();
+			
+			// choose spell
+			RS2Widget airStrikeWidget = null;
+			do {
+				try {
+					sleep(250);
+				} catch (InterruptedException e) {}
+				airStrikeWidget= widgets.get(201, 1);
+			} while(airStrikeWidget == null);
+		}
+		
+		tabs.open(Tab.INVENTORY);
+		
 		// get all spiders in area
 		for(NPC npc : allNPCs) {
 			if("Spider".equals(npc.getName())) {
@@ -173,12 +201,18 @@ public class Splasher extends Script {
 	}
 	
 	/**
-	 * Sleep for 3.5 to 4.5 minutes (less than the logout timer)
+	 * Sleep until out combat or until it is time to interact
+	 * 
+	 * Sleep for a max of 3.5 to 4.5 minutes or until out of combat.
+	 * If out of combat assume we ran out of runes and are done.
 	 */
 	private void waitUntilInteract() {
-		try {
-			sleep(random(210000, 270000));
-		} catch (InterruptedException e) {}
+		new ConditionalSleep(random(210000, 270000), 2000) {
+			@Override
+			public boolean condition() throws InterruptedException {
+				return !combat.isFighting();
+			}
+		}.sleep();
 		
 		state = State.INTERACT;
 	}
