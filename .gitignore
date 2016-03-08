@@ -1,7 +1,7 @@
 .classpath
 .project
 *bin
-*/.settings
+*.settings
 *build
 *dist
 *.externalToolBuilders
