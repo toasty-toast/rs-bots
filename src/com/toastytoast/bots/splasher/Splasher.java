@@ -61,6 +61,8 @@ public class Splasher extends Script {
 	public void onStart() {
 		// start tracking magic XP gained
 		experienceTracker.start(Skill.MAGIC);
+		
+		state = State.INIT;
 	}
 	
 	/**
@@ -140,11 +142,21 @@ public class Splasher extends Script {
 			tabs.open(Tab.ATTACK);
 		}
 		
+		// close combat spell selection if already open
+		RS2Widget cancelWidget = widgets.get(201, 0, 0);
+		if(cancelWidget != null) {
+			cancelWidget.interact();
+			try {
+				sleep(500);
+			} catch (InterruptedException e) {}
+		}
+		
 		RS2Widget autocastWidget = widgets.get(593, 25);
 		// make sure we are wielding a staff that can autocast
 		if(autocastWidget == null) {
 			JOptionPane.showMessageDialog(null, "You must be wielding a staff capable of autocast");
 			stop(false);
+			return;
 		} else {
 			autocastWidget.interact();
 			
@@ -154,7 +166,7 @@ public class Splasher extends Script {
 				try {
 					sleep(250);
 				} catch (InterruptedException e) {}
-				airStrikeWidget= widgets.get(201, 1);
+				airStrikeWidget = widgets.get(201, 0, 1);
 			} while(airStrikeWidget == null);
 		}
 		
@@ -178,6 +190,7 @@ public class Splasher extends Script {
 			// notify user that there are no spiders to attack and exit
 			JOptionPane.showMessageDialog(null, "No available spiders here");
 			stop(false);
+			return;
 		}
 		
 		// just attack the first spider in the list
