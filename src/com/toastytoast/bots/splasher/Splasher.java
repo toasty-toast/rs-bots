@@ -110,7 +110,13 @@ public class Splasher extends Script {
 		log("Magic XP/hr: " + experienceTracker.getGainedXPPerHour(Skill.MAGIC));
 	}
 	
+	/**
+	 * Check if player has a low enough magic bonus to splash
+	 * 
+	 * @return True if player has low enough magic bonus to splash
+	 */
 	private boolean readyToSplash() {
+		// TODO: check if player actually low enough magic bonus to splash
 		return true;
 	}
 	
