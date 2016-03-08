@@ -1,3 +1,4 @@
+package com.toastytoast.bots.rougedencooker;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -11,6 +12,8 @@ import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import org.osbot.rs07.utility.ConditionalSleep;
+
+import com.toastytoast.bots.utils.XPReporter;
 
 @ScriptManifest(author="ToastyToast", info = "", logo = "", name = "Rouge's Den Cooker", version = 0.1)
 public class RougeDenCooker extends Script {

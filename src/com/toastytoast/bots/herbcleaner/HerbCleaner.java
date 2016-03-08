@@ -1,9 +1,12 @@
+package com.toastytoast.bots.herbcleaner;
 import java.io.IOException;
 
 import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+
+import com.toastytoast.bots.utils.XPReporter;
 
 @ScriptManifest(author="ToastyToast", info = "", logo = "", name = "Herb Cleaner", version = 0.1)
 public class HerbCleaner extends Script {

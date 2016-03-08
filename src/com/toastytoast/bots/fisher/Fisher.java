@@ -1,3 +1,4 @@
+package com.toastytoast.bots.fisher;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -16,6 +17,8 @@ import org.osbot.rs07.api.util.LocalPathFinder;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import org.osbot.rs07.utility.ConditionalSleep;
+
+import com.toastytoast.bots.utils.XPReporter;
 
 /**
  * This class contains a script for use in OSBot that will fish

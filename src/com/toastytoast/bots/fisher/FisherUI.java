@@ -1,3 +1,4 @@
+package com.toastytoast.bots.fisher;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.osbot.rs07.script.Script;
+
 import javax.swing.BoxLayout;
+
 import java.awt.GridLayout;
 
 /**

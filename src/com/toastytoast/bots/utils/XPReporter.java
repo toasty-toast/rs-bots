@@ -1,3 +1,4 @@
+package com.toastytoast.bots.utils;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;

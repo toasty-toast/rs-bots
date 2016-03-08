@@ -1,3 +1,4 @@
+package com.toastytoast.bots.utils;
 import java.util.HashMap;
 import java.util.Map;
 
