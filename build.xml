@@ -46,6 +46,7 @@
 			</manifest>
 			<fileset dir="${build}">
 				<include name="**/herbcleaner/**" />
+				<include name="**/utils/**" />
 			</fileset>
 		</jar>
 	</target>
@@ -60,6 +61,7 @@
 			</manifest>
 			<fileset dir="${build}">
 				<include name="**/rougedencooker/**" />
+				<include name="**/utils/**" />
 			</fileset>
 		</jar>
 	</target>
@@ -68,5 +70,8 @@
 	</target>
 	
 	<target name="install" depends="all">
+		<copy todir="C:\Users\${user.name}\OSBot\Scripts">
+			<fileset dir="${dist}" />
+		</copy>
 	</target>
 </project>
