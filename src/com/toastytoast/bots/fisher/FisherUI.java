@@ -1,5 +1,6 @@
 package com.toastytoast.bots.fisher;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -8,12 +9,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import org.osbot.rs07.script.Script;
-
-import javax.swing.BoxLayout;
-
-import java.awt.GridLayout;
 
 /**
  * This class contains a UI that allows the user to choose
