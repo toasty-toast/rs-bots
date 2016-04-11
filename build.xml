@@ -66,22 +66,7 @@
 		</jar>
 	</target>
 	
-	<target name="splasher" depends="compile">
-		<mkdir dir="${dist}" />
-		<jar destfile="${dist}/Splasher.jar" basedir="${dist}" excludes="**/*.jar">
-			<manifest>
-				<attribute name="Main-Class" value="com.toastytoast.bots.splasher.Splasher" />
-				<attribute name="Sealed" value="true" />
-				<attribute name="Class-Path" value="." />
-			</manifest>
-			<fileset dir="${build}">
-				<include name="**/splasher/**" />
-				<include name="**/utils/**" />
-			</fileset>
-		</jar>
-	</target>
-	
-	<target name="all" depends="fisher, herb-cleaner, rouge-den-cooker, splasher" />
+	<target name="all" depends="fisher, herb-cleaner, rouge-den-cooker" />
 	
 	<target name="install" depends="all">
 		<copy todir="C:\Users\${user.name}\OSBot\Scripts">
