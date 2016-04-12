@@ -20,21 +20,18 @@ public class LogoutPreventer extends Script {
 	 */
 	@Override
 	public int onLoop() {
-		moveMouse();
+		moveCamera();
 		waitForLogoutTimer();
 		
 		return 0;
 	}
 	
 	/**
-	 * Move the mouse randomly on the screen the reset the logout timer
+	 * Move the camera to a random position to reset the logout timer
 	 */
-	private void moveMouse() {
-		mouse.moveRandomly();
-		try {
-			sleep(random(250, 500));
-		} catch (InterruptedException e) {}
-		mouse.moveOutsideScreen();
+	private void moveCamera() {
+		camera.movePitch(random(22, 67));
+		camera.moveYaw(random(0, 270));
 	}
 	
 	/**
