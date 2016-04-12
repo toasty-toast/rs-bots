@@ -66,7 +66,21 @@
 		</jar>
 	</target>
 	
-	<target name="all" depends="fisher, herb-cleaner, rouge-den-cooker" />
+	<target name="logout-preventer" depends="compile">
+		<mkdir dir="${dist}" />
+		<jar destfile="${dist}/LogoutPreventer.jar" basedir="${dist}" excludes="**/*.jar">
+			<manifest>
+				<attribute name="Main-Class" value="com.toastytoast.bots.logoutpreventer.LogoutPreventer" />
+				<attribute name="Sealed" value="true" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+			<fileset dir="${build}">
+				<include name="**/logoutpreventer/**" />
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="all" depends="fisher, herb-cleaner, rouge-den-cooker, logout-preventer" />
 	
 	<target name="install" depends="all">
 		<copy todir="C:\Users\${user.name}\OSBot\Scripts">
